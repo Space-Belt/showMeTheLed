@@ -35,8 +35,8 @@ const HomeScreen = (props: Props) => {
       <ContentInput
         play={play}
         setPlay={setPlay}
-        setText={setText}
-        text={text}
+        content={text}
+        setContent={setText}
       />
     </SafeAreaView>
   );
