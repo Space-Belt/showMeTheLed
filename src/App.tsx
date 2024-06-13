@@ -14,6 +14,7 @@ import MainStackNavigator from './navigation/MainStackNavigator';
 export type RootStackParamList = {
   Home: undefined;
   MainStack: undefined;
+  Setting: undefined;
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -21,7 +22,7 @@ const RootStack = createStackNavigator<RootStackParamList>();
 function App(): React.JSX.Element {
   return (
     <NavigationContainer>
-      <RootStack.Navigator screenOptions={{}}>
+      <RootStack.Navigator screenOptions={{headerShown: false}}>
         <RootStack.Screen name="MainStack" component={MainStackNavigator} />
       </RootStack.Navigator>
     </NavigationContainer>
