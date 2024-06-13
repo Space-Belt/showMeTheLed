@@ -7,7 +7,7 @@ type Props = {
   handleSettingBtn: () => void;
 };
 
-const Header = ({handleSettingBtn}: Props) => {
+const Header = React.memo(({handleSettingBtn}: Props) => {
   return (
     <View style={styles.headerWrapper}>
       <TouchableOpacity onPress={handleSettingBtn}>
@@ -15,7 +15,7 @@ const Header = ({handleSettingBtn}: Props) => {
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 export default Header;
 
