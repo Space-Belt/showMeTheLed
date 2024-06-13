@@ -13,7 +13,8 @@ class MainActivity : ReactActivity() {
    * rendering of the component.
    */
   override fun getMainComponentName(): String = "ShowMeTheLed"
-    override fun onCreate(savedInstanceState: Bundle?) {
+  
+  override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(null)
   }
 
