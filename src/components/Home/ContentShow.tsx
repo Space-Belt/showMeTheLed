@@ -36,7 +36,7 @@ const ContentShow = ({
   }
 
   return (
-    <View style={[styles.containerBasicStyle]}>
+    <View style={[styles.containerBasicStyle, backgroundStyle]}>
       <Text
         numberOfLines={1}
         ellipsizeMode="clip"

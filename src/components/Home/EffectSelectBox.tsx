@@ -6,23 +6,42 @@ import {
   ViewProps,
   ViewStyle,
 } from 'react-native';
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {COLORS} from '../../theme/theme';
 import Tab from './Tab';
-import {useLayout} from '../../hooks/useLayout';
-import {getWindowWidth} from '../../util/getWindowWidth';
+import FontStylingBox from './TabContent/FontStylingBox';
+import BackgroundStylingBox from './TabContent/BackgroundStylingBox';
+import EffectStylingBox from './TabContent/EffectStylingBox';
 
-type Props = {};
+type Props = {
+  selectedTabIndex: number;
+  setSelectedTabIndex: Dispatch<SetStateAction<number>>;
+  backgroundColor: string | undefined;
+  setBackgroundColor: Dispatch<SetStateAction<string | undefined>>;
+};
 
-const EffectSelectBox = (props: Props) => {
-  const [selectedTabIndex, setSelectedTabIndex] = React.useState<number>(0);
-
+const EffectSelectBox = ({
+  selectedTabIndex,
+  setSelectedTabIndex,
+  backgroundColor,
+  setBackgroundColor,
+}: Props) => {
   return (
     <View style={styles.container}>
       <Tab
         selectedTabIndex={selectedTabIndex}
         setSelectedTabIndex={setSelectedTabIndex}
       />
+      {selectedTabIndex === 0 ? (
+        <BackgroundStylingBox
+          selectedBackgroundColor={backgroundColor}
+          setSelectedBackgroundColor={setBackgroundColor}
+        />
+      ) : selectedTabIndex === 1 ? (
+        <FontStylingBox />
+      ) : (
+        <EffectStylingBox />
+      )}
     </View>
   );
 };

@@ -28,7 +28,7 @@ const Tab = ({selectedTabIndex, setSelectedTabIndex}: Props) => {
   const handleTabStyle = (indexNum: number): StyleProp<TextStyle> => {
     if (indexNum === selectedTabIndex) {
       return {
-        color: 'skyblue',
+        color: 'black',
         fontWeight: '700',
       };
     }
@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textStyle: {
-    color: '#7a7474',
+    color: '#7d7777c2',
     textAlign: 'center',
+    fontWeight: '700',
   },
 });
