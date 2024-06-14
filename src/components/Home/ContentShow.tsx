@@ -1,12 +1,20 @@
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {
+  ImageBackground,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
+import {Asset} from 'react-native-image-picker';
 
 type Props = {
   text: string;
   backgroundColor?: string;
   fontSize?: number;
   fontColor?: string;
-  backgroundImg?: string | undefined;
+  backgroundImg?: Asset | undefined;
 };
 
 const ContentShow = ({
@@ -22,18 +30,25 @@ const ContentShow = ({
       }
     : {};
 
-  if (backgroundImg) {
+  if (backgroundImg !== undefined) {
     return (
-      <View style={[styles.containerBasicStyle, backgroundStyle]}>
+      <ImageBackground
+        source={{
+          uri: backgroundImg.uri,
+        }}
+        imageStyle={styles.imageStyle}
+        style={[styles.backgroundImageStyle]}>
         <Text
           numberOfLines={1}
           ellipsizeMode="clip"
           style={[styles.textBasicStyle]}>
           {text}
         </Text>
-      </View>
+      </ImageBackground>
     );
   }
+
+  // http://www.starsvalley.com/star/data/sub3_31/23$1$%EC%9D%80%ED%95%98%EC%88%98.jpg
 
   return (
     <View style={[styles.containerBasicStyle, backgroundStyle]}>
@@ -54,11 +69,19 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: 150,
     justifyContent: 'center',
-    backgroundColor: 'skyblue',
   },
   textBasicStyle: {
     overflow: 'hidden',
     fontSize: 60,
     fontWeight: 'bold',
+  },
+  backgroundImageStyle: {
+    height: 150,
+    justifyContent: 'center',
+    width: '100%',
+    resizeMode: 'cover',
+  },
+  imageStyle: {
+    borderRadius: 15,
   },
 });
