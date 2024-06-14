@@ -1,10 +1,13 @@
 import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import React, {Dispatch, SetStateAction} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {COLORS} from '../../../theme/theme';
 
 type Props = {
   selectedBackgroundColor: string | undefined;
   setSelectedBackgroundColor: Dispatch<SetStateAction<string | undefined>>;
+  colorPickerModal: boolean;
+  setColorPickerModal: Dispatch<SetStateAction<boolean>>;
 };
 
 const backgroundChoices: string[] = [
@@ -21,7 +24,17 @@ const backgroundChoices: string[] = [
 const BackgroundStylingBox = ({
   selectedBackgroundColor,
   setSelectedBackgroundColor,
+  colorPickerModal,
+  setColorPickerModal,
 }: Props) => {
+  const selfColor: StyleProp<ViewStyle> = {
+    backgroundColor: !backgroundChoices.find(
+      el => el === selectedBackgroundColor,
+    )
+      ? selectedBackgroundColor
+      : '#fff',
+  };
+
   const handleSelectedColorStyle = (
     colorElement: string,
   ): StyleProp<ViewStyle> => {
@@ -36,10 +49,31 @@ const BackgroundStylingBox = ({
   return (
     <View style={styles.container}>
       <View>
-        <Text>배경색</Text>
+        <View style={styles.categoryWrapper}>
+          <Text style={styles.categoryText}>배경색</Text>
+          <View style={styles.selfColorWrapper}>
+            <TouchableOpacity
+              onPress={() => {
+                setColorPickerModal(prev => !prev);
+              }}
+              style={[
+                styles.selfColorContent,
+                selfColor,
+                !backgroundChoices.find(el => el === selectedBackgroundColor) &&
+                selectedBackgroundColor !== undefined
+                  ? handleSelectedColorStyle(selectedBackgroundColor)
+                  : {},
+              ]}>
+              {!backgroundChoices.find(
+                el => el === selectedBackgroundColor,
+              ) && <Text style={styles.seltSelectedText}>선택</Text>}
+            </TouchableOpacity>
+            <Text style={styles.selfText}>직접 고르기</Text>
+          </View>
+        </View>
         <View style={styles.selectorWrapper}>
-          {backgroundChoices.map((colorEl, index) => (
-            <View style={{flexBasis: '22%', margin: 3}}>
+          {backgroundChoices.map(colorEl => (
+            <View style={styles.colorWrapper} key={JSON.stringify(colorEl)}>
               <TouchableOpacity
                 onPress={() => {
                   setSelectedBackgroundColor(colorEl);
@@ -75,6 +109,21 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
   },
+  categoryWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  categoryText: {
+    fontWeight: '700',
+    marginBottom: 10,
+  },
+  colorWrapper: {
+    flexBasis: '22%',
+    margin: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   colorContent: {
     width: 50,
     height: 50,
@@ -82,7 +131,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  selfColorWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selfText: {
+    marginTop: 3,
+    fontSize: 10,
+    color: COLORS.THIRD,
+  },
+  selfColorContent: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   selectedText: {
-    color: '#997e7e',
+    color: COLORS.THIRD,
+  },
+  seltSelectedText: {
+    fontSize: 8,
+    color: COLORS.THIRD,
   },
 });
