@@ -1,13 +1,30 @@
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import React, {Dispatch, SetStateAction} from 'react';
+import {
+  Platform,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  Asset,
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 import {COLORS} from '../../../theme/theme';
+import Gallery from '../../../assets/icons/galleryIcon.svg';
+import Trash from '../../../assets/icons/deleteIcon.svg';
 
 type Props = {
   selectedBackgroundColor: string | undefined;
   setSelectedBackgroundColor: Dispatch<SetStateAction<string | undefined>>;
   colorPickerModal: boolean;
   setColorPickerModal: Dispatch<SetStateAction<boolean>>;
+  backgroundImg: Asset | undefined;
+  setBackgroundImg: Dispatch<SetStateAction<Asset | undefined>>;
 };
 
 const backgroundChoices: string[] = [
@@ -21,11 +38,19 @@ const backgroundChoices: string[] = [
   '#CB99C9',
 ];
 
+const imagePickerOption = {
+  mediaType: 'photo',
+  includeBase64: Platform.OS === 'android',
+  selectionLimit: 1,
+};
+
 const BackgroundStylingBox = ({
   selectedBackgroundColor,
   setSelectedBackgroundColor,
   colorPickerModal,
   setColorPickerModal,
+  backgroundImg,
+  setBackgroundImg,
 }: Props) => {
   const selfColor: StyleProp<ViewStyle> = {
     backgroundColor: !backgroundChoices.find(
@@ -46,10 +71,33 @@ const BackgroundStylingBox = ({
     }
   };
 
+  const onPickImage = (res: any) => {
+    // console.log(res);
+    if (res.didCancel || !res) {
+      return;
+    }
+    let temp: Asset | undefined = {
+      ...res.assets[0],
+      uri:
+        Platform.OS === 'android'
+          ? res.assets[0].uri
+          : res.assets[0].uri!.replace('file://', ''),
+    };
+    console.log(temp);
+
+    setBackgroundImg(temp);
+
+    console.log('dfdsf');
+  };
+
+  const onLaunchImageLibrary = () => {
+    launchImageLibrary(imagePickerOption as ImageLibraryOptions, onPickImage);
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View>
-        <View style={styles.categoryWrapper}>
+        <View style={styles.firstCategoryWrapper}>
           <Text style={styles.categoryText}>배경색</Text>
           <View style={styles.selfColorWrapper}>
             <TouchableOpacity
@@ -92,8 +140,25 @@ const BackgroundStylingBox = ({
             </View>
           ))}
         </View>
+        <View style={styles.categoryWrapper}>
+          <Text style={styles.categoryText}>사진배경</Text>
+        </View>
+        <TouchableOpacity onPress={onLaunchImageLibrary}>
+          <View style={styles.galleryBtn}>
+            <Gallery width={30} height={30} style={styles.galleryIocn} />
+            <Text style={styles.galleryText}>사진 선택하기</Text>
+          </View>
+        </TouchableOpacity>
+        {backgroundImg && (
+          <TouchableOpacity onPress={() => setBackgroundImg(undefined)}>
+            <View style={styles.deleteBtn}>
+              <Trash width={30} height={30} style={styles.galleryIocn} />
+              <Text style={styles.galleryText}>사진 없애기</Text>
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -102,6 +167,7 @@ export default BackgroundStylingBox;
 const styles = StyleSheet.create({
   container: {
     padding: 15,
+    height: 400,
   },
   selectorWrapper: {
     width: '100%',
@@ -109,10 +175,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
   },
+  firstCategoryWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   categoryWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 20,
   },
   categoryText: {
     fontWeight: '700',
@@ -153,5 +225,33 @@ const styles = StyleSheet.create({
   seltSelectedText: {
     fontSize: 8,
     color: COLORS.THIRD,
+  },
+  galleryBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#d3765ca1',
+    paddingVertical: 10,
+    borderRadius: 20,
+  },
+  galleryIocn: {
+    width: 30,
+    height: 30,
+    color: 'white',
+    marginRight: 10,
+  },
+  galleryText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  deleteBtn: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.THIRD,
+    paddingVertical: 10,
+    borderRadius: 20,
   },
 });

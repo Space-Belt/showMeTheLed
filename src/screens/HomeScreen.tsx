@@ -13,11 +13,12 @@ import ContentInput from '../components/Home/ContentInput';
 import EffectSelectBox from '../components/Home/EffectSelectBox';
 import ColorPickerModal from '../components/Home/ColorPickerModal';
 import {returnedResults} from 'reanimated-color-picker';
+import {Asset} from 'react-native-image-picker';
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
-  const [text, setText] = React.useState<string>('아아아');
+  const [text, setText] = React.useState<string>('');
 
   const [play, setPlay] = React.useState<boolean>(false);
 
@@ -29,6 +30,8 @@ const HomeScreen = (props: Props) => {
 
   const [colorPickerModal, setColorPickerModal] =
     React.useState<boolean>(false);
+
+  const [backgroundImg, setBackgroundImg] = React.useState<Asset>();
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
@@ -43,7 +46,11 @@ const HomeScreen = (props: Props) => {
   return (
     <SafeAreaView style={styles.background}>
       <Header handleSettingBtn={handleSettingBtn} />
-      <ContentShow text={text} backgroundColor={backgroundColor} />
+      <ContentShow
+        text={text}
+        backgroundColor={backgroundColor}
+        backgroundImg={backgroundImg}
+      />
       <ContentInput
         play={play}
         setPlay={setPlay}
@@ -57,6 +64,8 @@ const HomeScreen = (props: Props) => {
         setSelectedTabIndex={setSelectedTabIndex}
         colorPickerModal={colorPickerModal}
         setColorPickerModal={setColorPickerModal}
+        backgroundImg={backgroundImg}
+        setBackgroundImg={setBackgroundImg}
       />
       <ColorPickerModal
         showModal={colorPickerModal}
