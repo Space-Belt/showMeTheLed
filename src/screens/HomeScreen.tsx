@@ -10,6 +10,9 @@ import {RootStackParamList} from '../App';
 import Header from '../components/Home/Header';
 import ContentShow from '../components/Home/ContentShow';
 import ContentInput from '../components/Home/ContentInput';
+import EffectSelectBox from '../components/Home/EffectSelectBox';
+import ColorPickerModal from '../components/Home/ColorPickerModal';
+import {returnedResults} from 'reanimated-color-picker';
 
 type Props = {};
 
@@ -18,15 +21,24 @@ const HomeScreen = (props: Props) => {
 
   const [play, setPlay] = React.useState<boolean>(false);
 
+  const [selectedTabIndex, setSelectedTabIndex] = React.useState<number>(0);
+
   const [backgroundColor, setBackgroundColor] = React.useState<
     string | undefined
-  >();
+  >('#AEC6CF');
+
+  const [colorPickerModal, setColorPickerModal] =
+    React.useState<boolean>(false);
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleSettingBtn = useCallback(() => {
     navigation.navigate('Setting');
   }, []);
+
+  const selectColor = (color: returnedResults) => {
+    setBackgroundColor(color.hex);
+  };
 
   return (
     <SafeAreaView style={styles.background}>
@@ -37,6 +49,22 @@ const HomeScreen = (props: Props) => {
         setPlay={setPlay}
         content={text}
         setContent={setText}
+      />
+      <EffectSelectBox
+        backgroundColor={backgroundColor}
+        setBackgroundColor={setBackgroundColor}
+        selectedTabIndex={selectedTabIndex}
+        setSelectedTabIndex={setSelectedTabIndex}
+        colorPickerModal={colorPickerModal}
+        setColorPickerModal={setColorPickerModal}
+      />
+      <ColorPickerModal
+        showModal={colorPickerModal}
+        setShowModal={setColorPickerModal}
+        onSelectColor={selectColor}
+        onClose={() => {
+          setColorPickerModal(prev => !prev);
+        }}
       />
     </SafeAreaView>
   );
