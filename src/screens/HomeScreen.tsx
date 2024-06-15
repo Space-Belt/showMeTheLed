@@ -33,6 +33,10 @@ const HomeScreen = (props: Props) => {
 
   const [backgroundImg, setBackgroundImg] = React.useState<Asset>();
 
+  const [textSize, setTextSize] = React.useState<number>(60);
+
+  const [textColor, setTextColor] = React.useState<string>('#000');
+
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleSettingBtn = useCallback(() => {

@@ -12,12 +12,17 @@ import Tab from './Tab';
 import FontStylingBox from './TabContent/FontStylingBox';
 import BackgroundStylingBox from './TabContent/BackgroundStylingBox';
 import EffectStylingBox from './TabContent/EffectStylingBox';
+import {Asset} from 'react-native-image-picker';
 
 type Props = {
   selectedTabIndex: number;
   setSelectedTabIndex: Dispatch<SetStateAction<number>>;
   backgroundColor: string | undefined;
   setBackgroundColor: Dispatch<SetStateAction<string | undefined>>;
+  colorPickerModal: boolean;
+  setColorPickerModal: Dispatch<SetStateAction<boolean>>;
+  backgroundImg: Asset | undefined;
+  setBackgroundImg: Dispatch<SetStateAction<Asset | undefined>>;
 };
 
 const EffectSelectBox = ({
@@ -25,6 +30,10 @@ const EffectSelectBox = ({
   setSelectedTabIndex,
   backgroundColor,
   setBackgroundColor,
+  colorPickerModal,
+  setColorPickerModal,
+  backgroundImg,
+  setBackgroundImg,
 }: Props) => {
   return (
     <View style={styles.container}>
@@ -36,6 +45,10 @@ const EffectSelectBox = ({
         <BackgroundStylingBox
           selectedBackgroundColor={backgroundColor}
           setSelectedBackgroundColor={setBackgroundColor}
+          colorPickerModal={colorPickerModal}
+          setColorPickerModal={setColorPickerModal}
+          backgroundImg={backgroundImg}
+          setBackgroundImg={setBackgroundImg}
         />
       ) : selectedTabIndex === 1 ? (
         <FontStylingBox />
