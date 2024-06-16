@@ -15,6 +15,7 @@ type Props = {
 
   setTextSize: Dispatch<SetStateAction<number>>;
   textColor: string;
+  setTextColor: Dispatch<SetStateAction<string>>;
 };
 const fontColorList: string[] = [
   '#FF6F61',
@@ -31,11 +32,17 @@ const fontColorList: string[] = [
   '#08E8DE',
   '#BF00FF',
   '#FF073A',
+  '#0FF0FC',
 ];
 
 const fontSizeList: number[] = [30, 45, 60, 75, 90];
 
-const FontStylingBox = ({textSize, setTextSize, textColor}: Props) => {
+const FontStylingBox = ({
+  textSize,
+  setTextSize,
+  textColor,
+  setTextColor,
+}: Props) => {
   const handleBackground = (color: string): StyleProp<ViewStyle> => {
     return {
       backgroundColor: color,
@@ -66,10 +73,16 @@ const FontStylingBox = ({textSize, setTextSize, textColor}: Props) => {
         </View>
         <View style={styles.selectableContainer}>
           {fontColorList.map(colorEl => (
-            <TouchableOpacity
-              style={[styles.selectableWrapper, handleBackground(colorEl)]}
-              key={colorEl}
-            />
+            <View style={styles.selectableStyle}>
+              <TouchableOpacity
+                style={[styles.selectableWrapper, handleBackground(colorEl)]}
+                key={colorEl}
+                onPress={() => {
+                  setTextColor(colorEl);
+                }}>
+                {textColor === colorEl && <Text>선택</Text>}
+              </TouchableOpacity>
+            </View>
           ))}
         </View>
       </View>

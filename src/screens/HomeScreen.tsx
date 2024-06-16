@@ -70,6 +70,10 @@ const HomeScreen = (props: Props) => {
         setColorPickerModal={setColorPickerModal}
         backgroundImg={backgroundImg}
         setBackgroundImg={setBackgroundImg}
+        textSize={textSize}
+        setTextSize={setTextSize}
+        textColor={textColor}
+        setTextColor={setTextColor}
       />
       <ColorPickerModal
         showModal={colorPickerModal}

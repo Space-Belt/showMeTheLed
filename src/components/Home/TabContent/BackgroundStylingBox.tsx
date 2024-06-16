@@ -21,7 +21,6 @@ import Trash from '../../../assets/icons/deleteIcon.svg';
 type Props = {
   selectedBackgroundColor: string | undefined;
   setSelectedBackgroundColor: Dispatch<SetStateAction<string | undefined>>;
-  colorPickerModal: boolean;
   setColorPickerModal: Dispatch<SetStateAction<boolean>>;
   backgroundImg: Asset | undefined;
   setBackgroundImg: Dispatch<SetStateAction<Asset | undefined>>;
@@ -47,7 +46,6 @@ const imagePickerOption = {
 const BackgroundStylingBox = ({
   selectedBackgroundColor,
   setSelectedBackgroundColor,
-  colorPickerModal,
   setColorPickerModal,
   backgroundImg,
   setBackgroundImg,
