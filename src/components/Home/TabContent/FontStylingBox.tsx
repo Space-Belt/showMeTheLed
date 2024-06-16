@@ -7,11 +7,13 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {COLORS} from '../../../theme/theme';
 
 type Props = {
   textSize: number;
+
+  setTextSize: Dispatch<SetStateAction<number>>;
   textColor: string;
 };
 const fontColorList: string[] = [
@@ -33,7 +35,7 @@ const fontColorList: string[] = [
 
 const fontSizeList: number[] = [30, 45, 60, 75, 90];
 
-const FontStylingBox = (props: Props) => {
+const FontStylingBox = ({textSize, setTextSize, textColor}: Props) => {
   const handleBackground = (color: string): StyleProp<ViewStyle> => {
     return {
       backgroundColor: color,
@@ -48,19 +50,25 @@ const FontStylingBox = (props: Props) => {
         </View>
         <View style={styles.selectableContainer}>
           {fontSizeList.map(sizeEl => (
-            <TouchableOpacity style={styles.selectableWrapper} key={sizeEl}>
-              <Text>{sizeEl / 30}x</Text>
-            </TouchableOpacity>
+            <View style={[styles.selectableBox, styles.selectableStyle]}>
+              <TouchableOpacity
+                style={styles.selectableWrapper}
+                key={sizeEl}
+                onPress={() => setTextSize(sizeEl)}>
+                <Text>{sizeEl / 30}x</Text>
+              </TouchableOpacity>
+              {textSize === sizeEl ? <Text>선택</Text> : <Text />}
+            </View>
           ))}
         </View>
         <View style={styles.categoryWrapper}>
           <Text style={styles.categoryText}>글씨색상</Text>
         </View>
         <View style={styles.selectableContainer}>
-          {fontColorList.map(sizeEl => (
+          {fontColorList.map(colorEl => (
             <TouchableOpacity
-              style={[styles.selectableWrapper, handleBackground(sizeEl)]}
-              key={sizeEl}
+              style={[styles.selectableWrapper, handleBackground(colorEl)]}
+              key={colorEl}
             />
           ))}
         </View>
@@ -98,8 +106,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   selectableContainer: {
+    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
   },
   selectableWrapper: {
     width: 40,
@@ -107,6 +117,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     borderColor: COLORS.THIRD,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectableBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectableStyle: {
+    flexBasis: '18%',
+    margin: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
