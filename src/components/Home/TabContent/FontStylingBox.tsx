@@ -1,9 +1,11 @@
 import {
   ScrollView,
+  StyleProp,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from 'react-native';
 import React from 'react';
 import {COLORS} from '../../../theme/theme';
@@ -32,6 +34,12 @@ const fontColorList: string[] = [
 const fontSizeList: number[] = [30, 45, 60, 75, 90];
 
 const FontStylingBox = (props: Props) => {
+  const handleBackground = (color: string): StyleProp<ViewStyle> => {
+    return {
+      backgroundColor: color,
+    };
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -40,14 +48,21 @@ const FontStylingBox = (props: Props) => {
         </View>
         <View style={styles.selectableContainer}>
           {fontSizeList.map(sizeEl => (
-            <View style={styles.selectableWrapper}>
-              <Text>{sizeEl / 30}</Text>
-            </View>
+            <TouchableOpacity style={styles.selectableWrapper} key={sizeEl}>
+              <Text>{sizeEl / 30}x</Text>
+            </TouchableOpacity>
           ))}
         </View>
-        <View style={styles.selectorWrapper}></View>
         <View style={styles.categoryWrapper}>
           <Text style={styles.categoryText}>글씨색상</Text>
+        </View>
+        <View style={styles.selectableContainer}>
+          {fontColorList.map(sizeEl => (
+            <TouchableOpacity
+              style={[styles.selectableWrapper, handleBackground(sizeEl)]}
+              key={sizeEl}
+            />
+          ))}
         </View>
       </View>
     </ScrollView>
