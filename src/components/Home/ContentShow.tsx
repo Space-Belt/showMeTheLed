@@ -3,6 +3,7 @@ import {
   StyleProp,
   StyleSheet,
   Text,
+  TextStyle,
   View,
   ViewStyle,
 } from 'react-native';
@@ -12,16 +13,16 @@ import {Asset} from 'react-native-image-picker';
 type Props = {
   text: string;
   backgroundColor?: string;
-  fontSize?: number;
-  fontColor?: string;
+  textSize?: number;
+  textColor?: string;
   backgroundImg?: Asset | undefined;
 };
 
 const ContentShow = ({
   text,
   backgroundColor,
-  fontSize,
-  fontColor,
+  textSize,
+  textColor,
   backgroundImg,
 }: Props) => {
   const backgroundStyle: StyleProp<ViewStyle> = backgroundColor
@@ -29,6 +30,11 @@ const ContentShow = ({
         backgroundColor: backgroundColor,
       }
     : {};
+
+  const fontStyle: StyleProp<TextStyle> = {
+    fontSize: textSize,
+    color: textColor,
+  };
 
   if (backgroundImg !== undefined) {
     return (
@@ -41,7 +47,7 @@ const ContentShow = ({
         <Text
           numberOfLines={1}
           ellipsizeMode="clip"
-          style={[styles.textBasicStyle]}>
+          style={[styles.textBasicStyle, fontStyle]}>
           {text}
         </Text>
       </ImageBackground>
@@ -55,7 +61,7 @@ const ContentShow = ({
       <Text
         numberOfLines={1}
         ellipsizeMode="clip"
-        style={[styles.textBasicStyle]}>
+        style={[styles.textBasicStyle, fontStyle]}>
         {text}
       </Text>
     </View>

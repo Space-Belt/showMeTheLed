@@ -22,7 +22,7 @@ const fontColorList: string[] = [
   '#3EB489',
   '#4169E1',
   '#FFD700',
-  '#E6E6FA',
+  '#FFFFFF',
   '#800020',
   '#FA8072',
   '#39FF14',
