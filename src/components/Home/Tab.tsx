@@ -9,7 +9,6 @@ import {
 import React, {Dispatch, SetStateAction} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useLayout} from '../../hooks/useLayout';
-import {getWindowWidth} from '../../util/getWindowWidth';
 
 type Props = {
   selectedTabIndex: number;

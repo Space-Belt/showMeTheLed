@@ -56,6 +56,8 @@ const HomeScreen = (props: Props) => {
         backgroundImg={backgroundImg}
         textSize={textSize}
         textColor={textColor}
+        play={play}
+        setPlay={setPlay}
       />
       <ContentInput
         play={play}

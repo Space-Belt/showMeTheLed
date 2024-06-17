@@ -23,6 +23,10 @@ type Props = {
   setColorPickerModal: Dispatch<SetStateAction<boolean>>;
   backgroundImg: Asset | undefined;
   setBackgroundImg: Dispatch<SetStateAction<Asset | undefined>>;
+  textSize: number;
+  setTextSize: Dispatch<SetStateAction<number>>;
+  textColor: string;
+  setTextColor: Dispatch<SetStateAction<string>>;
 };
 
 const EffectSelectBox = ({
@@ -34,6 +38,10 @@ const EffectSelectBox = ({
   setColorPickerModal,
   backgroundImg,
   setBackgroundImg,
+  textSize,
+  setTextSize,
+  textColor,
+  setTextColor,
 }: Props) => {
   return (
     <View style={styles.container}>
@@ -45,13 +53,17 @@ const EffectSelectBox = ({
         <BackgroundStylingBox
           selectedBackgroundColor={backgroundColor}
           setSelectedBackgroundColor={setBackgroundColor}
-          colorPickerModal={colorPickerModal}
           setColorPickerModal={setColorPickerModal}
           backgroundImg={backgroundImg}
           setBackgroundImg={setBackgroundImg}
         />
       ) : selectedTabIndex === 1 ? (
-        <FontStylingBox />
+        <FontStylingBox
+          textSize={textSize}
+          setTextSize={setTextSize}
+          textColor={textColor}
+          setTextColor={setTextColor}
+        />
       ) : (
         <EffectStylingBox />
       )}
