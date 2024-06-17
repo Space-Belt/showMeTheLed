@@ -35,7 +35,7 @@ const fontColorList: string[] = [
   '#0FF0FC',
 ];
 
-const fontSizeList: number[] = [30, 45, 60, 75, 90];
+const fontSizeList: number[] = [40, 60, 80, 100, 120];
 
 const FontStylingBox = ({
   textSize,
@@ -49,6 +49,15 @@ const FontStylingBox = ({
     };
   };
 
+  const handleSelected = (args: number | string) => {
+    if (args === textSize || args === textColor) {
+      return {
+        borderWidth: 3,
+        borderColor: '#997e7e',
+      };
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -59,10 +68,10 @@ const FontStylingBox = ({
           {fontSizeList.map(sizeEl => (
             <View style={[styles.selectableBox, styles.selectableStyle]}>
               <TouchableOpacity
-                style={styles.selectableWrapper}
+                style={[styles.selectableWrapper, handleSelected(sizeEl)]}
                 key={sizeEl}
                 onPress={() => setTextSize(sizeEl)}>
-                <Text>{sizeEl / 30}x</Text>
+                <Text>{sizeEl / 40}x</Text>
               </TouchableOpacity>
               {textSize === sizeEl ? <Text>선택</Text> : <Text />}
             </View>
@@ -75,12 +84,18 @@ const FontStylingBox = ({
           {fontColorList.map(colorEl => (
             <View style={styles.selectableStyle}>
               <TouchableOpacity
-                style={[styles.selectableWrapper, handleBackground(colorEl)]}
+                style={[
+                  styles.selectableWrapper,
+                  handleBackground(colorEl),
+                  handleSelected(colorEl),
+                ]}
                 key={colorEl}
                 onPress={() => {
                   setTextColor(colorEl);
                 }}>
-                {textColor === colorEl && <Text>선택</Text>}
+                {textColor === colorEl && (
+                  <Text style={styles.selectedText}>선택</Text>
+                )}
               </TouchableOpacity>
             </View>
           ))}
@@ -142,5 +157,9 @@ const styles = StyleSheet.create({
     margin: 3,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  selectedText: {
+    color: '#fff',
+    fontWeight: '700',
   },
 });
