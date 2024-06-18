@@ -17,6 +17,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {getWindowWidth} from '../../util/getWindowWidth';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {useLayout} from '../../hooks/useLayout';
 
 type Props = {
   text: string;
@@ -39,6 +40,8 @@ const ContentShow = ({
   textColor,
   backgroundImg,
 }: Props) => {
+  const [layout, onLayout] = useLayout();
+
   const boxRotateValue = useSharedValue(0);
   const textRotateValue = useSharedValue(0);
 
@@ -60,9 +63,14 @@ const ContentShow = ({
     };
   });
 
+  const aa = -width / 2 - layout.height / 2;
+
   const textRotateAnimatedStyle = useAnimatedStyle(() => {
     return {
       overflow: play ? 'visible' : 'hidden',
+      width: play ? height : 'auto',
+      position: play ? 'absolute' : 'relative',
+      left: play ? aa : 0,
       transform: [
         {
           rotate: `${textRotateValue.value}deg`,
@@ -72,11 +80,15 @@ const ContentShow = ({
   });
 
   React.useEffect(() => {
+    console.log(layout);
+  }, [layout]);
+
+  React.useEffect(() => {
     if (play) {
       widthValue.value = withTiming(width, {duration: 1000});
       heightValue.value = withTiming(height, {duration: 1000});
       boxRotateValue.value = withTiming(-180, {duration: 1000});
-      textRotateValue.value = withTiming(90, {duration: 1000});
+      textRotateValue.value = withTiming(-270, {duration: 1000});
     } else {
       widthValue.value = withTiming(width - 40, {duration: 1000});
       heightValue.value = withTiming(150, {duration: 1000});
@@ -133,6 +145,7 @@ const ContentShow = ({
         {/* <View style={[styles.containerBasicStyle, backgroundStyle]}> */}
         <Animated.Text
           numberOfLines={1}
+          onLayout={onLayout}
           ellipsizeMode="clip"
           style={[styles.textBasicStyle, fontStyle, textRotateAnimatedStyle]}>
           {text}
@@ -154,6 +167,7 @@ const styles = StyleSheet.create({
   textBasicStyle: {
     fontSize: 60,
     fontWeight: 'bold',
+    width: '100%',
   },
   backgroundImageStyle: {
     height: 150,
