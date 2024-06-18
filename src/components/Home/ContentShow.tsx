@@ -12,6 +12,8 @@ import {Asset} from 'react-native-image-picker';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withRepeat,
+  withSequence,
   withTiming,
 } from 'react-native-reanimated';
 import {useLayout} from '../../hooks/useLayout';
@@ -42,6 +44,7 @@ const ContentShow = ({
 
   const boxRotateValue = useSharedValue(0);
   const textRotateValue = useSharedValue(0);
+  const translateValue = useSharedValue(-height);
 
   const widthValue = useSharedValue(width - 40);
 
@@ -77,9 +80,16 @@ const ContentShow = ({
     };
   });
 
-  React.useEffect(() => {
-    console.log(layout);
-  }, [layout]);
+  const transLateAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      // transform: [
+      //   {
+      //     translateY: translateValue.value,
+      //   },
+      // ],
+      top: translateValue.value,
+    };
+  });
 
   React.useEffect(() => {
     if (play) {
@@ -87,6 +97,27 @@ const ContentShow = ({
       heightValue.value = withTiming(height, {duration: 1000});
       boxRotateValue.value = withTiming(-180, {duration: 1000});
       textRotateValue.value = withTiming(-270, {duration: 1000});
+      setTimeout(() => {
+        // translateValue.value = withRepeat(height, {duration: 1000})
+        translateValue.value = withRepeat(
+          // withTiming(height * 2, {duration: 5000}, () => {
+          //   translateValue.value = withTiming(-height, {duration: 0});
+          // }),
+          withSequence(
+            withTiming(height * 1.5, {duration: 10000}),
+            withTiming(-height, {duration: 0}),
+          ),
+          -1,
+        );
+        // translateValue.value = withRepeat(
+        //   withSequence(
+        //     withTiming(-height, {duration: 3000}),
+        //     withTiming(height, {duration: 0}),
+        //     -1,
+        //   ),
+        // );
+        console.log('dfdfdfdf');
+      }, 1000);
     } else {
       widthValue.value = withTiming(width - 40, {duration: 1000});
       heightValue.value = withTiming(150, {duration: 1000});
@@ -146,7 +177,12 @@ const ContentShow = ({
           numberOfLines={1}
           onLayout={onLayout}
           ellipsizeMode="clip"
-          style={[styles.textBasicStyle, fontStyle, textRotateAnimatedStyle]}>
+          style={[
+            styles.textBasicStyle,
+            fontStyle,
+            textRotateAnimatedStyle,
+            transLateAnimatedStyle,
+          ]}>
           {text}
         </Animated.Text>
       </Animated.View>
