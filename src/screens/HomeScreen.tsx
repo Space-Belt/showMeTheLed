@@ -63,6 +63,7 @@ const HomeScreen = (props: Props) => {
         play={play}
         setPlay={setPlay}
         content={text}
+        textSize={textSize}
         setContent={setText}
       />
       <EffectSelectBox

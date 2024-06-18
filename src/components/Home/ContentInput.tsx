@@ -7,16 +7,34 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 type Props = {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
-  play: boolean;
   setPlay: Dispatch<SetStateAction<boolean>>;
+  textSize: number;
 };
 
-const ContentInput = ({content, setContent, play, setPlay}: Props) => {
+const ContentInput = ({content, setContent, setPlay, textSize}: Props) => {
+  React.useEffect(() => {
+    let temp: string = '';
+    if (textSize === 60 && content.length > 16) {
+    }
+  }, [textSize]);
+
   return (
     <View style={styles.container}>
       <TextInput
         value={content}
-        onChangeText={text => setContent(text)}
+        onChangeText={text => {
+          if (textSize === 40) {
+            text.length < 17 && setContent(text);
+          } else if (textSize === 60) {
+            text.length < 15 && setContent(text);
+          } else if (textSize === 80) {
+            text.length < 13 && setContent(text);
+          } else if (textSize === 100) {
+            text.length < 11 && setContent(text);
+          } else {
+            text.length < 9 && setContent(text);
+          }
+        }}
         style={styles.textStyle}
       />
       <TouchableOpacity onPress={() => setPlay(prev => !prev)}>
