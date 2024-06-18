@@ -1,3 +1,4 @@
+import React, {Dispatch, SetStateAction} from 'react';
 import {
   ImageBackground,
   StyleProp,
@@ -5,19 +6,16 @@ import {
   Text,
   TextStyle,
   TouchableOpacity,
-  View,
   ViewStyle,
 } from 'react-native';
-import React, {Dispatch, SetStateAction} from 'react';
 import {Asset} from 'react-native-image-picker';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {getWindowWidth} from '../../util/getWindowWidth';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {useLayout} from '../../hooks/useLayout';
+import {getWindowWidth} from '../../util/getWindowWidth';
 
 type Props = {
   text: string;
@@ -63,14 +61,14 @@ const ContentShow = ({
     };
   });
 
-  const aa = -width / 2 - layout.height / 2;
+  const absoluteLeft = -width / 2 - layout.height / 2;
 
   const textRotateAnimatedStyle = useAnimatedStyle(() => {
     return {
       overflow: play ? 'visible' : 'hidden',
       width: play ? height : 'auto',
       position: play ? 'absolute' : 'relative',
-      left: play ? aa : 0,
+      left: play ? absoluteLeft : 0,
       transform: [
         {
           rotate: `${textRotateValue.value}deg`,
@@ -108,6 +106,11 @@ const ContentShow = ({
     color: textColor,
   };
 
+  const btnStyle: StyleProp<ViewStyle> = {
+    position: play ? 'absolute' : 'relative',
+    zIndex: play ? 1000 : 0,
+  };
+
   if (backgroundImg !== undefined) {
     return (
       <ImageBackground
@@ -132,17 +135,13 @@ const ContentShow = ({
         setPlay(prev => !prev);
         console.log('dfdfdfd');
       }}
-      style={{
-        position: play ? 'absolute' : 'relative',
-        zIndex: play ? 1000 : 0,
-      }}>
+      style={btnStyle}>
       <Animated.View
         style={[
           styles.containerBasicStyle,
           backgroundStyle,
           rotateAnimatedStyle,
         ]}>
-        {/* <View style={[styles.containerBasicStyle, backgroundStyle]}> */}
         <Animated.Text
           numberOfLines={1}
           onLayout={onLayout}
@@ -150,7 +149,6 @@ const ContentShow = ({
           style={[styles.textBasicStyle, fontStyle, textRotateAnimatedStyle]}>
           {text}
         </Animated.Text>
-        {/* </View> */}
       </Animated.View>
     </TouchableOpacity>
   );
@@ -164,6 +162,7 @@ const styles = StyleSheet.create({
     height: 150,
     justifyContent: 'center',
   },
+
   textBasicStyle: {
     fontSize: 60,
     fontWeight: 'bold',
