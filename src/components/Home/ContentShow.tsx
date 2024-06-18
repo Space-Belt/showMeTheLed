@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -81,14 +82,15 @@ const ContentShow = ({
   });
 
   const transLateAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      // transform: [
-      //   {
-      //     translateY: translateValue.value,
-      //   },
-      // ],
-      top: translateValue.value,
-    };
+    if (play) {
+      return {
+        top: translateValue.value,
+      };
+    } else {
+      return {
+        top: 0,
+      };
+    }
   });
 
   React.useEffect(() => {
@@ -98,27 +100,16 @@ const ContentShow = ({
       boxRotateValue.value = withTiming(-180, {duration: 1000});
       textRotateValue.value = withTiming(-270, {duration: 1000});
       setTimeout(() => {
-        // translateValue.value = withRepeat(height, {duration: 1000})
         translateValue.value = withRepeat(
-          // withTiming(height * 2, {duration: 5000}, () => {
-          //   translateValue.value = withTiming(-height, {duration: 0});
-          // }),
           withSequence(
-            withTiming(height * 1.5, {duration: 10000}),
             withTiming(-height, {duration: 0}),
+            withTiming(height * 1.5, {duration: 10000}),
           ),
           -1,
         );
-        // translateValue.value = withRepeat(
-        //   withSequence(
-        //     withTiming(-height, {duration: 3000}),
-        //     withTiming(height, {duration: 0}),
-        //     -1,
-        //   ),
-        // );
-        console.log('dfdfdfdf');
       }, 1000);
     } else {
+      cancelAnimation(translateValue);
       widthValue.value = withTiming(width - 40, {duration: 1000});
       heightValue.value = withTiming(150, {duration: 1000});
       boxRotateValue.value = withTiming(0, {duration: 1000});
@@ -164,7 +155,6 @@ const ContentShow = ({
     <TouchableOpacity
       onPress={() => {
         setPlay(prev => !prev);
-        console.log('dfdfdfd');
       }}
       style={btnStyle}>
       <Animated.View
