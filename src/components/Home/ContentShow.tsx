@@ -193,6 +193,24 @@ const ContentShow = ({
           source={{uri: backgroundImg.uri}}
           style={[styles.containerBasicStyle, rotateAnimatedStyle]}
         />
+        <Animated.Text
+          style={[
+            {
+              transform: [
+                {
+                  rotate: '270deg',
+                },
+              ],
+              zIndex: 1000,
+              overflow: play ? 'visible' : 'hidden',
+              width: play ? height : 'auto',
+              position: play ? 'absolute' : 'relative',
+              left: play ? absoluteLeft : 0,
+            },
+            fontStyle,
+          ]}>
+          {text}
+        </Animated.Text>
       </TouchableOpacity>
     );
   }
