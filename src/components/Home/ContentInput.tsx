@@ -24,15 +24,15 @@ const ContentInput = ({content, setContent, setPlay, textSize}: Props) => {
         value={content}
         onChangeText={text => {
           if (textSize === 40) {
-            text.length < 17 && setContent(text);
+            text.length < 25 && setContent(text);
           } else if (textSize === 60) {
-            text.length < 15 && setContent(text);
+            text.length < 20 && setContent(text);
           } else if (textSize === 80) {
-            text.length < 13 && setContent(text);
+            text.length < 15 && setContent(text);
           } else if (textSize === 100) {
-            text.length < 11 && setContent(text);
-          } else {
             text.length < 9 && setContent(text);
+          } else {
+            text.length < 7 && setContent(text);
           }
         }}
         style={styles.textStyle}

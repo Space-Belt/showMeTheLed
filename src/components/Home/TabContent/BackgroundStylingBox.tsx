@@ -84,8 +84,7 @@ const BackgroundStylingBox = ({
     console.log(temp);
 
     setBackgroundImg(temp);
-
-    console.log('dfdsf');
+    setSelectedBackgroundColor(undefined);
   };
 
   const onLaunchImageLibrary = () => {
@@ -101,6 +100,7 @@ const BackgroundStylingBox = ({
             <TouchableOpacity
               onPress={() => {
                 setColorPickerModal(prev => !prev);
+                setBackgroundImg(undefined);
               }}
               style={[
                 styles.selfColorContent,
@@ -123,6 +123,7 @@ const BackgroundStylingBox = ({
               <TouchableOpacity
                 onPress={() => {
                   setSelectedBackgroundColor(colorEl);
+                  setBackgroundImg(undefined);
                 }}
                 style={[
                   styles.colorContent,
