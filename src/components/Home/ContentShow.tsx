@@ -208,6 +208,7 @@ const ContentShow = ({
               left: play ? absoluteLeft : 0,
             },
             fontStyle,
+            transLateAnimatedStyle,
           ]}>
           {text}
         </Animated.Text>
