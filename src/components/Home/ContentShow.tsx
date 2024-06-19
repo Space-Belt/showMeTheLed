@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import Animated, {
+  FadeIn,
+  FadeOut,
   cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
@@ -19,11 +21,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import {useLayout} from '../../hooks/useLayout';
 import {getWindowWidth} from '../../util/getWindowWidth';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
   text: string;
   play: boolean;
   setPlay: Dispatch<SetStateAction<boolean>>;
+  textSpeed: number;
   backgroundColor?: string;
   textSize?: number;
   textColor?: string;
@@ -36,6 +40,7 @@ const ContentShow = ({
   text,
   play,
   setPlay,
+  textSpeed,
   backgroundColor,
   textSize,
   textColor,
@@ -44,6 +49,7 @@ const ContentShow = ({
   const [layout, onLayout] = useLayout();
 
   const boxRotateValue = useSharedValue(0);
+
   const textRotateValue = useSharedValue(0);
   const translateValue = useSharedValue(-height);
 
@@ -65,7 +71,22 @@ const ContentShow = ({
     };
   });
 
-  const absoluteLeft = -width / 2 - layout.height / 2;
+  const backgroundImageStyle: StyleProp<ViewStyle> = {
+    width: play && !backgroundColor ? height : 'auto',
+    height: play && !backgroundColor ? width : 150,
+    position: play ? 'absolute' : 'relative',
+
+    transform: [
+      {
+        rotate: play ? '90deg' : '0deg',
+      },
+    ],
+  };
+
+  const absoluteLeft =
+    textSize && textSize >= 80
+      ? -width / 2 - layout.height / 4
+      : -width / 2 - layout.height / 2 - 15;
 
   const textRotateAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -95,6 +116,7 @@ const ContentShow = ({
 
   React.useEffect(() => {
     if (play) {
+      // if (backgroundColor) {
       widthValue.value = withTiming(width, {duration: 1000});
       heightValue.value = withTiming(height, {duration: 1000});
       boxRotateValue.value = withTiming(-180, {duration: 1000});
@@ -108,6 +130,9 @@ const ContentShow = ({
           -1,
         );
       }, 1000);
+      // }
+
+      // imageBoxRotateValue.value = withTiming(90, {duration: 1000});
     } else {
       cancelAnimation(translateValue);
       widthValue.value = withTiming(width - 40, {duration: 1000});
@@ -115,7 +140,7 @@ const ContentShow = ({
       boxRotateValue.value = withTiming(0, {duration: 1000});
       textRotateValue.value = withTiming(0, {duration: 1000});
     }
-  }, [play]);
+  }, [play, backgroundColor]);
 
   const backgroundStyle: StyleProp<ViewStyle> = backgroundColor
     ? {
@@ -133,21 +158,42 @@ const ContentShow = ({
     zIndex: play ? 1000 : 0,
   };
 
-  if (backgroundImg !== undefined) {
+  if (backgroundImg !== undefined && !play) {
     return (
-      <ImageBackground
-        source={{
-          uri: backgroundImg.uri,
+      <TouchableOpacity
+        onPress={() => {
+          setPlay(prev => !prev);
         }}
-        imageStyle={styles.imageStyle}
-        style={[styles.backgroundImageStyle]}>
-        <Text
-          numberOfLines={1}
-          ellipsizeMode="clip"
-          style={[styles.textBasicStyle, fontStyle]}>
-          {text}
-        </Text>
-      </ImageBackground>
+        style={[btnStyle, backgroundImageStyle]}>
+        <ImageBackground
+          source={{
+            uri: backgroundImg.uri,
+          }}
+          imageStyle={styles.imageStyle}
+          style={[styles.backgroundImageStyle, play && backgroundImageStyle]}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="clip"
+            style={[styles.textBasicStyle, fontStyle]}>
+            {text}
+          </Text>
+        </ImageBackground>
+      </TouchableOpacity>
+    );
+  }
+
+  if (backgroundImg !== undefined && play) {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setPlay(prev => !prev);
+        }}
+        style={btnStyle}>
+        <Animated.Image
+          source={{uri: backgroundImg.uri}}
+          style={[styles.containerBasicStyle, rotateAnimatedStyle]}
+        />
+      </TouchableOpacity>
     );
   }
 
@@ -185,6 +231,7 @@ export default ContentShow;
 const styles = StyleSheet.create({
   containerBasicStyle: {
     borderRadius: 15,
+    width: '100%',
     height: 150,
     justifyContent: 'center',
   },
