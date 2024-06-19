@@ -66,7 +66,9 @@ const FontStylingBox = ({
         </View>
         <View style={styles.selectableContainer}>
           {fontSizeList.map(sizeEl => (
-            <View style={[styles.selectableBox, styles.selectableStyle]}>
+            <View
+              style={[styles.selectableBox, styles.selectableStyle]}
+              key={sizeEl}>
               <TouchableOpacity
                 style={[styles.selectableWrapper, handleSelected(sizeEl)]}
                 key={sizeEl}
@@ -82,7 +84,7 @@ const FontStylingBox = ({
         </View>
         <View style={styles.selectableContainer}>
           {fontColorList.map(colorEl => (
-            <View style={styles.selectableStyle}>
+            <View style={styles.selectableStyle} key={colorEl}>
               <TouchableOpacity
                 style={[
                   styles.selectableWrapper,
