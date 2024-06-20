@@ -194,6 +194,21 @@ const ContentShow = ({
           style={[styles.containerBasicStyle, rotateAnimatedStyle]}
         />
         <Animated.Text
+          numberOfLines={1}
+          onLayout={onLayout}
+          ellipsizeMode="clip"
+          style={[
+            styles.textBasicStyle,
+            fontStyle,
+            textRotateAnimatedStyle,
+            transLateAnimatedStyle,
+            {
+              zIndex: 1000,
+            },
+          ]}>
+          {text}
+        </Animated.Text>
+        {/* <Animated.Text
           style={[
             {
               transform: [
@@ -211,7 +226,7 @@ const ContentShow = ({
             transLateAnimatedStyle,
           ]}>
           {text}
-        </Animated.Text>
+        </Animated.Text> */}
       </TouchableOpacity>
     );
   }
