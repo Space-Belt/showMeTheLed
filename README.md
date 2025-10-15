@@ -6,6 +6,7 @@
 <p>
 <img src="https://github.com/user-attachments/assets/60e33cf3-ae50-452c-9ea3-6d830e176a30" width="20%" />
 <img src="https://github.com/user-attachments/assets/cc1bd356-d7f1-4376-beaa-7b94d62b70b5" width="20%" />
+  <img src="https://github.com/user-attachments/assets/acbe1ec5-b584-4ee0-b675-cbeb1c44cb55" width="20%" />
 </p>
 - gif 변환으로인해 끊겨보입니다.
 
